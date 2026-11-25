@@ -6,17 +6,18 @@ A design shows the user what the slice will create, before any code exists: ever
 
 1. **Title**: `### Slice <n>: <route or user action> — <what it does>`
 2. **Tree**: the call tree in a code block. Every level, private methods marked `(private)`. Marks: 🆕 new, ✏️ changed, no mark for reused (add `(reused)` or `(<module> module, reused)` when it helps). On the right: 🛡️ permission, 🔒 transaction or row lock, 🌍 outside call (external API, or frontend → our API), `→ 409 <reason>` errors.
-3. **Story**: 2–3 short lines, one real case with a person and real values.
-4. **DB change** (backend): only the schema change, one line each with why it matters (a new enum value, a new index, a new column). `none (read only)` when nothing changes. No data tables.
-5. **Code**: the nested boxes (rules below).
-6. **New / changed**: types, errors (with HTTP code), messages, shared pieces. One line per group.
-7. **Tests**: the test names, grouped by kind (e2e, unit). These are the tests the sub-agent writes first.
+3. **Reuse**: one line per match with `notes.md`: `♻️ <noted piece> · reused` or `♻️ same shape as <noted piece> (Slice <n>)`, and each Owners line this slice follows. `none` when nothing matches.
+4. **Story**: 2–3 short lines, one real case with a person and real values.
+5. **DB change** (backend): only the schema change, one line each with why it matters (a new enum value, a new index, a new column). `none (read only)` when nothing changes. No data tables.
+6. **Code**: the nested boxes (rules below).
+7. **New / changed**: types, errors (with HTTP code), messages, shared pieces. One line per group.
+8. **Tests**: the test names, grouped by kind (e2e, unit). These are the tests the sub-agent writes first.
 
 Frontend adds, before New / changed:
 - **UI states**: what the user sees in each state (empty, loading, success, each error).
 - 🧠 **State table**, when values change while the user acts: one row per moment, changed cells in **bold**, max 4 rows.
 
-**Foundation slice**: parts 1, 4, 6 only, plus new entity fields and enum values. No tree, no boxes: there is no flow.
+**Foundation slice**: parts 1, 3, 5, 7 only, plus new entity fields and enum values. No tree, no boxes: there is no flow.
 
 ## Boxes
 

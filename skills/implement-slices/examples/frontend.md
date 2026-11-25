@@ -14,6 +14,10 @@ DomainRenameForm (from Slice 2)                      shows the input
   └ 🆕 SlugCheck({ check })                          the pill next to the input
 ```
 
+**Reuse.**
+- ♻️ Owners: api decides whether a slug is free; `slugCheckOf` only turns the answer into a word.
+- ♻️ same shape as `useDomainLookup` (Slice 2): a debounced query hook that returns null while typing.
+
 **Story.** Ann types "harbour" in the box. 300ms after she stops, the page asks the API.
 "harbour" belongs to another Project → a red pill "Used by another Project".
 She types "harbour-bay" → green pill "Available".

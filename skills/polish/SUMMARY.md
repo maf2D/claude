@@ -9,7 +9,7 @@ The summary `/polish` ends with. It reads like a slice design from `/implement-s
 3. **One section per touched slice**, in slice-map order, each opened by a `---` line. Slices polish didn't touch are left out. A slice whose design is missing → build its tree and boxes from the code, in the same style. **No slice designs at all** → one section per touched flow instead: `### Flow A: <entry>: <what it does>`, the entry being a route, a page, or what starts it (`app boot`, `called by ProjectService`), as in a tour diff tour.
 4. **✏️ Small fixes**: renames, unused imports, typos; one bullet each with its file, no code.
 5. **🚫 Not done**: `⚔️ Conflict:`, `⏭️ Skipped:` (with reason), `💡 Arch ideas not applied:` (the clean round's `Speculative` ones), `↩️ Undone:` (a red step that was restored). Omit an empty line.
-6. `✅` (or `❌`) `Full suite: <colour>. Ticket: checked against #<n>` (or `skipped, no spec found`), then `Not committed. <n> files changed.`
+6. `✅` (or `❌`, or `⏭️` when skipped) `Full suite: <colour or skipped>. Ticket: checked against #<n>` (or `skipped, no spec found`), then `Not committed. <n> files changed.`
 
 ## Item ids
 

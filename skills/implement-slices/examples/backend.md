@@ -18,6 +18,8 @@ GET /operator/domains/:id/slug-availability → DomainController.slugAvailabilit
             └ 🆕 renameRefusalOf (util, given as callback)
 ```
 
+**Reuse.** ♻️ Owners: api decides whether a slug is free and why not.
+
 **Story.** Ann renames "harbour-view" and types "harbour". The form asks this endpoint.
 "harbour" belongs to another Project → `{ availability: "taken", takenReason: "project" }`.
 

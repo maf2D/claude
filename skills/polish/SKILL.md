@@ -17,18 +17,30 @@ The work stays **uncommitted**. No `git commit`, `git stash`, `git reset` or pus
 - **Gate**: typecheck plus the tests for changed files. **Green** means every command exited 0.
 - **Save point**: a snapshot of the whole working tree, untracked files included. `scripts/savepoint.sh save` prints a tree id; `scripts/savepoint.sh restore <id>` puts the tree back. (The script is in this skill's folder.)
 
+## Options
+
+A caller (such as `/implement-slices`) may pass any of these; each one missing takes its default.
+
+- **spec**: the ticket or spec. Default: found in step 1.3.
+- **base**: a commit or tree id; the change is everything since it. Default: found in step 1.1.
+- **designs**: a file holding the approved slice designs. Default: the designs in this chat (step 1.5).
+- **rounds**: the most architecture and review rounds. Default: 2 and 3.
+- **full suite**: `skip` leaves out step 5. Default: run it.
+- **starting change log**: files whose entries join the change log before round 1, each entry prefixed with its file name (`changelog-A: A1 …`). Default: none.
+- **change log out**: a file the final change log is written to. Default: none.
+
 ## 1. Prepare
 
-1. **Base**: `git rev-parse --verify --quiet dev` → if it exists, `git merge-base dev HEAD`; else the merge-base with the default branch (`git symbolic-ref --short refs/remotes/origin/HEAD`, falling back to `main`).
+1. **Base**: the base option; else `git rev-parse --verify --quiet dev` → if it exists, `git merge-base dev HEAD`; else the merge-base with the default branch (`git symbolic-ref --short refs/remotes/origin/HEAD`, falling back to `main`).
 2. **The change**: `git diff <base> --stat` plus `git ls-files --others --exclude-standard` (new files are untracked, so the diff alone misses them). Note which untracked files belong to the work; scratch notes and logs do not.
-3. **Spec**: the ticket or spec the caller passed; else an issue number in `git log <base>..HEAD` messages or the branch name, fetched the way the repo's docs say (e.g. `docs/agents/issue-tracker.md`, else `gh issue view`). None found → the spec axis is skipped for the whole run; record that for the summary.
+3. **Spec**: the spec option; else an issue number in `git log <base>..HEAD` messages or the branch name, fetched the way the repo's docs say (e.g. `docs/agents/issue-tracker.md`, else `gh issue view`). None found → the spec axis is skipped for the whole run; record that for the summary.
 4. **Gate commands**: from `CLAUDE.md`, `README.md` and `package.json` scripts, including any project gotcha about what must be built before tests read it. Also find the **full suite** command.
-5. **Slice designs**: the approved designs `/implement-slices` wrote in this chat, each slice's latest approved version, word for word. A design cut short by a summarized chat counts as missing for that slice. None (another caller, or `/polish` run alone) → the summary groups by flow.
-6. Save point #0. Change log starts empty.
+5. **Slice designs**: the designs file; else the approved designs `/implement-slices` wrote in this chat, each slice's latest approved version, word for word. A design cut short by a summarized chat counts as missing for that slice. None (another caller, or `/polish` run alone) → the summary groups by flow.
+6. Save point #0. Change log starts with the starting change log, else empty.
 
 Done when you hold: base, file list, spec (or "none"), gate commands, full-suite command, slice designs (or "none"), save point #0.
 
-## 2. Architecture rounds (up to 2)
+## 2. Architecture rounds (up to 2, or the rounds option)
 
 Find the architecture skill's text: `.claude/skills/improve-codebase-architecture/SKILL.md` in the repo if present, else `~/.claude/skills/improve-codebase-architecture/SKILL.md`. It is user-invoked, so the sub-agent reads it as a file.
 
@@ -39,9 +51,9 @@ Find the architecture skill's text: `.claude/skills/improve-codebase-architectur
 
 Then a **fixer** (see Fixer brief) applies the candidates. A candidate may contradict an ADR or need a new term: apply it, add an amend note to the ADR, add the term to `CONTEXT.md`. Then run the **gate** (step 4).
 
-**Stop** when a round is **clean** (no `Strong` or `Worth exploring` candidate; its `Speculative` ones go unapplied, into the summary), or after round 2. A round with a stronger candidate applies all of its candidates, `Speculative` included.
+**Stop** when a round is **clean** (no `Strong` or `Worth exploring` candidate; its `Speculative` ones go unapplied, into the summary), or after the last allowed round. A round with a stronger candidate applies all of its candidates, `Speculative` included.
 
-## 3. Review rounds (up to 3)
+## 3. Review rounds (up to 3, or the rounds option)
 
 Invoke `/code-review` once to load its process, then run that process each round with these overrides:
 
@@ -53,7 +65,7 @@ Invoke `/code-review` once to load its process, then run that process each round
 
 Hand every finding to a **fixer**, then run the **gate**.
 
-**Stop** when a round has no findings, when its fixer made no edits (only skips and conflicts), or after round 3.
+**Stop** when a round has no findings, when its fixer made no edits (only skips and conflicts), or after the last allowed round.
 
 ## 4. Gate (after every fixer)
 
@@ -64,11 +76,11 @@ Run the gate commands yourself, output to a log file in `$TMPDIR` (never in the 
 
 ## 5. Full suite (once)
 
-Run the full suite. Red → one fixer with the output, run again, and append its change-log lines (they go in the summary). Still red → keep the tree as is and report it red in the summary; it may predate the polish.
+Full suite option `skip` → record `Full suite: skipped` for the summary and go to step 6. Else run the full suite. Red → one fixer with the output, run again, and append its change-log lines (they go in the summary). Still red → keep the tree as is and report it red in the summary; it may predate the polish.
 
 ## 6. Summary
 
-Take a final save point. Renumber the fixers' item ids so each kind counts from 1 in order; keep ⚠️ lines and conflicts pointing at the right ids.
+Take a final save point. Renumber the fixers' item ids so each kind counts from 1 in order; keep ⚠️ lines and conflicts pointing at the right ids. Change log out given → write this run's change-log lines there, with the new ids.
 
 Then start a **writer** sub-agent. Give it: the path of `SUMMARY.md` (in this skill's folder), the slice designs (or "none"), the spec, the renumbered items, the ⚠️ lines, the Not done lines, the full-suite result, and the polish diff command `git diff <save point #0> <final save point>`. It reads the diff and the files it touches, and returns the summary exactly in that file's format: each change as before and after code in its place in the slice (or flow), with its 💬 reason.
 
