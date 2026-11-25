@@ -1,0 +1,12 @@
+{
+  "name": "Soft Diff",
+  "base": "dark-ansi",
+  "overrides": {
+    "diffAdded": "ansi256(234)",
+    "diffRemoved": "ansi256(233)",
+    "diffAddedDimmed": "ansi256(234)",
+    "diffRemovedDimmed": "ansi256(233)",
+    "diffAddedWord": "ansi256(236)",
+    "diffRemovedWord": "ansi256(235)"
+  }
+}

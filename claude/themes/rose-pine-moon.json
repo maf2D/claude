@@ -1,0 +1,16 @@
+{
+  "name": "Rose Pine Moon",
+  "base": "dark-ansi",
+  "overrides": {
+    "diffAdded": "#2a3a45",
+    "diffRemoved": "#3e2a3f",
+    "diffAddedWord": "#3e5f6e",
+    "diffRemovedWord": "#6e3a52",
+    "diffAddedDimmed": "#26303d",
+    "diffRemovedDimmed": "#332638",
+    "userMessageBackground": "#2a273f",
+    "userMessageBackgroundHover": "#393552",
+    "bashMessageBackgroundColor": "#2a273f",
+    "memoryBackgroundColor": "#2a273f"
+  }
+}
