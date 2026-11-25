@@ -19,3 +19,13 @@ The script copies everything in `claude/` into `~/.claude`. It backs up your old
 - `claude/output-styles` – "Short Simple" output style
 - `claude/themes` – color themes
 - `claude/CLAUDE.md`, `settings.json`, `keybindings.json` – global config
+
+## Save new skills or config
+
+After you add a new skill or change settings in `~/.claude`, run:
+
+```bash
+~/claude-setup/sync.sh
+```
+
+It copies the latest files into this repo, commits and pushes. Deleted skills are deleted here too.
