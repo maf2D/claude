@@ -1,31 +1,20 @@
 # Claude Code setup
 
-My skills, commands, hooks, output style, themes and settings for Claude Code.
+This repo is my `~/.claude` folder. Only useful files are tracked (see `.gitignore`):
+skills, commands, hooks, output styles, themes, `CLAUDE.md`, `settings.json`, `keybindings.json`.
 
-## Install
+## Auto save
 
-```bash
-git clone <this-repo> ~/claude-setup
-~/claude-setup/install.sh
-```
+A `SessionEnd` hook (`hooks/auto-commit.sh`) commits and pushes changes when a Claude session ends.
+Nothing to run by hand.
 
-The script copies everything in `claude/` into `~/.claude`. It backs up your old `settings.json` first.
-
-## What is inside
-
-- `claude/skills` – all skills (Matt Pocock skills are copied as real files; source list in `skill-lock.json`)
-- `claude/commands` – slash commands
-- `claude/hooks` – hooks (git push confirm)
-- `claude/output-styles` – "Short Simple" output style
-- `claude/themes` – color themes
-- `claude/CLAUDE.md`, `settings.json`, `keybindings.json` – global config
-
-## Save new skills or config
-
-After you add a new skill or change settings in `~/.claude`, run:
+## Use on a new computer
 
 ```bash
-~/claude-setup/sync.sh
+cd ~/.claude            # create it if it does not exist
+git init -b main
+git remote add origin git@github.com:maf2D/claude.git
+git fetch origin
+git reset --hard origin/main   # overwrites tracked files only
+git branch -u origin/main
 ```
-
-It copies the latest files into this repo, commits and pushes. Deleted skills are deleted here too.

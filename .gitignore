@@ -1,2 +1,16 @@
+# Ignore everything, then allow only the files worth keeping
+/*
+!/.gitignore
+!/README.md
+!/CLAUDE.md
+!/settings.json
+!/keybindings.json
+!/skills/
+!/commands/
+!/hooks/
+!/output-styles/
+!/themes/
+
+# Auto-synced by Claude, not mine
+/skills/synced/
 .DS_Store
-*.bak*

@@ -32,6 +32,16 @@
           }
         ]
       }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/auto-commit.sh"
+          }
+        ]
+      }
     ]
   },
   "disableWorkflows": true,
