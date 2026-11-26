@@ -15,7 +15,7 @@ You are the **coordinator**. You read code, write designs and talk with the user
   - **Backend**: one route from top to bottom: controller method, service methods, repository methods, errors, tests.
   - **Frontend**: one user action on a page (open the rename box, see if a slug is free, send the form).
   - A slice keeps its size even when its design is long; a big method gets its own section in the design (see `DESIGN.md`).
-- **Group**: 2–5 slices that together make one piece of logic, backend to frontend. Each group ends with a group polish.
+- **Group**: 2–5 slices that together make one piece of logic, backend to frontend. Each group but the last ends with a group polish; the last group, and so a single group, gets only the final polish.
 - **Owners**: 2–5 lines under the map saying which side decides each rule and which shared piece does each repeated job. Every design follows them.
 - **Slice map**: the ordered list of slices, one line each: number, kind, title, and for frontend `needs: <backend slice numbers>`; slices sit under their group; the Owners lines follow.
 - **Work folder**: `$TMPDIR/implement-slices-<branch, / as ->/`. Outside the repo, so nothing in it is committed. It holds:
@@ -108,7 +108,7 @@ Done when the user approves.
 
 Run `git add -A`, then `git diff --stat`. Tell the user: "Slice <n> staged."
 
-Done when `git diff --stat` prints nothing: the next slice's diff starts empty. The last slice of a group → step 4. Else design the next slice.
+Done when `git diff --stat` prints nothing: the next slice's diff starts empty. The last slice of a group that is not the last group → step 4. The last slice of the last group → step 5. Else design the next slice.
 
 ## 4. Group polish
 
@@ -129,7 +129,7 @@ Done when `notes.md` matches the code and `git diff --stat` prints nothing. Then
 
 ## 5. Finish
 
-Done with slices when every slice in the map is approved, every group polished, and every acceptance criterion in the spec has code and a passing test.
+Done with slices when every slice in the map is approved, every group but the last polished, and every acceptance criterion in the spec has code and a passing test.
 
 Then run /polish with: the spec, `designs.md`, and every `changelog-<group>.md` as the starting change log. Other options keep their defaults: the full branch, full rounds, the full suite.
 
